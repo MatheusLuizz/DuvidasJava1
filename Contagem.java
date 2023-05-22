@@ -1,5 +1,3 @@
-package javaCEV;
-
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -16,6 +14,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.JScrollPane;
+import javax.swing.AbstractListModel;
 
 public class TelaContador extends JFrame implements ChangeListener, ActionListener {
 
@@ -25,12 +25,14 @@ public class TelaContador extends JFrame implements ChangeListener, ActionListen
 	private JLabel lblNewLabel_2;
 	private JLabel labelInicial;
 	private JLabel labelFinal;
-	private JLabel passo;
+	private JLabel labelPasso;
 	private JButton btnContar;
 	private JList listaContagem;
 	private JSlider sliderInicial;
 	private JSlider sliderFinal;
 	private JSlider sliderPasso;
+	private JPanel panel;
+	private JList list;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -45,14 +47,15 @@ public class TelaContador extends JFrame implements ChangeListener, ActionListen
 		});
 	}
 
+	@SuppressWarnings("unchecked")
 	public TelaContador() {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 634, 376);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
 		
 		lblNewLabel = new JLabel("Inicio");
 		lblNewLabel.setBounds(50, 64, 45, 13);
@@ -85,15 +88,15 @@ public class TelaContador extends JFrame implements ChangeListener, ActionListen
 		labelFinal.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(labelFinal);
 		
-		passo = new JLabel("1");
-		passo.setBounds(341, 133, 45, 13);
-		passo.setHorizontalAlignment(SwingConstants.CENTER);
-		passo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		contentPane.add(passo);
+		labelPasso = new JLabel("1");
+		labelPasso.setBounds(341, 133, 45, 13);
+		labelPasso.setHorizontalAlignment(SwingConstants.CENTER);
+		labelPasso.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		contentPane.add(labelPasso);
 		
 		btnContar = new JButton("Contar");
-		btnContar.addActionListener(this);
 		btnContar.setBounds(135, 172, 85, 21);
+		btnContar.addActionListener(this);
 		btnContar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(btnContar);
 		
@@ -102,25 +105,35 @@ public class TelaContador extends JFrame implements ChangeListener, ActionListen
 		contentPane.add(listaContagem);
 		
 		sliderInicial = new JSlider();
+		sliderInicial.setBounds(105, 64, 200, 22);
 		sliderInicial.setValue(0);
 		sliderInicial.setMaximum(5);
-		sliderInicial.setBounds(105, 64, 200, 22);
 		contentPane.add(sliderInicial);
+		sliderInicial.addChangeListener(this);
 		
 		sliderFinal = new JSlider();
+		sliderFinal.setBounds(105, 101, 200, 22);
 		sliderFinal.setMinimum(6);
-		sliderFinal.setMaximum(12);
+		sliderFinal.setMaximum(50);
 		sliderFinal.setValue(6);
-		sliderFinal.setBounds(105, 99, 200, 22);
 		contentPane.add(sliderFinal);
-		
+		sliderFinal.addChangeListener(this);
+
 		sliderPasso = new JSlider();
+		sliderPasso.setBounds(105, 133, 200, 22);
 		sliderPasso.setValue(1);
 		sliderPasso.setMaximum(4);
 		sliderPasso.setMinimum(1);
-		sliderPasso.setBounds(105, 133, 200, 22);
 		contentPane.add(sliderPasso);
+		sliderPasso.addChangeListener(this);
+		contentPane.setLayout(null);
 		
+		panel = new JPanel();
+		panel.setBounds(471, 10, 107, 319);
+		contentPane.add(panel);
+		
+		list = new JList();
+		panel.add(list);
 		
 	}
 	
@@ -128,20 +141,22 @@ public class TelaContador extends JFrame implements ChangeListener, ActionListen
 	public void stateChanged(ChangeEvent e) {
 		labelInicial.setText(Integer.toString(sliderInicial.getValue()));
 		labelFinal.setText(Integer.toString(sliderFinal.getValue()));
-		labelFinal.setText(Integer.toString(sliderFinal.getValue()));
+		labelPasso.setText(Integer.toString(sliderPasso.getValue()));
 
 	}
 	public void actionPerformed(ActionEvent e) {
+		DefaultListModel model = new DefaultListModel<>();
+		
 		int i, f, p;
 		i = sliderInicial.getValue();
 		f = sliderFinal.getValue();
 		p = sliderPasso.getValue();
 		
-		DefaultListModel lista = new DefaultListModel();
-		
-		for (int x = i; x <= f; p++) {
-			lista.addElement(x);
+		model.clear();
+				
+		for (int x = i; x <= f; x += p) {
+			model.addElement(x);
 		}
-		listaContagem.setModel(lista);
+		list.setModel(model);
 	}
 }
