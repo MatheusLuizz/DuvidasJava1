@@ -1,5 +1,3 @@
-package javaCEV;
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -61,6 +59,11 @@ public class Equacao2Grau extends JFrame implements ActionListener, ChangeListen
 		setBounds(100, 100, 359, 313);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		panRes = new JPanel();
+		panRes.setBounds(33, 180, 299, 86);
+		contentPane.add(panRes);
+		panRes.setLayout(null);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -163,11 +166,6 @@ public class Equacao2Grau extends JFrame implements ActionListener, ChangeListen
 		
 		btnNewButton = new JButton("Calcular Δ");
 		btnNewButton.addActionListener(this);
-		
-		panRes = new JPanel();
-		panRes.setBounds(33, 180, 299, 86);
-		contentPane.add(panRes);
-		panRes.setLayout(null);
 		
 		lblNewLabel_14 = new JLabel("Tipo =");
 		lblNewLabel_14.setBounds(10, 55, 50, 21);
